@@ -8,12 +8,11 @@ import cv2
 import numpy as np
 import pyautogui
 from gtts import gTTS
-from mpg123 import Mpg123, Out123
-
+import pyttsx3
 
 def get_screen_image():
     with NamedTemporaryFile() as f:
-        pil_image = pyautogui.screenshot(imageFilename=f.name)
+        pil_image = pyautogui.screenshot(imageFilename=f.name+'.png')
 
     opencvImage = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
     return opencvImage
@@ -36,15 +35,9 @@ def audio_describe(codes):
     if text == '':
         return
 
-    with io.BytesIO() as f:
-        gTTS(text=text, lang='en', slow=False).write_to_fp(f)
-        f.seek(0)
-        mp3 = Mpg123()
-        mp3.feed(f.read())
-        out = Out123()
-        for frame in mp3.iter_frames(out.start):
-            out.play(frame)
-
+    engine = pyttsx3.init()
+    engine.say(text)
+    engine.runAndWait()
 
 if __name__ == '__main__':
     while True:
