@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 /.vs
 /companion_app/.vscode
+
+.DS_Store
